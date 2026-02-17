@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Crypto Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Real-Time Cryptocurrency Dashboard</h1>
+            <p class="subtitle">Live market data powered by CoinGecko API</p>
+        </header>
+
+        <div class="controls">
+            <button id="refreshBtn" class="btn btn-primary">🔄 Refresh Now</button>
+            <span id="status" class="status-indicator loading">Loading...</span>
+            <span id="lastUpdate" class="last-update">Never updated</span>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3>Total Cryptos</h3>
+                <p id="totalCount" class="stat-value">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Valid Records</h3>
+                <p id="validCount" class="stat-value">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Data Quality</h3>
+                <p id="qualityScore" class="stat-value">0%</p>
+            </div>
+            <div class="stat-card">
+                <h3>Updates</h3>
+                <p id="updateCount" class="stat-value">0</p>
+            </div>
+        </div>
+
+        <div class="data-container">
+            <h2>Cryptocurrency Prices</h2>
+            <table id="dataTable" class="data-table">
+                <thead>
+                    <tr>
+                        <th>Cryptocurrency</th>
+                        <th>Price (USD)</th>
+                        <th>Market Cap (USD)</th>
+                        <th>24h Volume (USD)</th>
+                        <th>24h Change (%)</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr class="empty-row">
+                        <td colspan="5">No data available</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <footer>
+            <p>Data source: <a href="https://www.coingecko.com" target="_blank">CoinGecko API</a> | Last updated: <span id="footerTime">-</span></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
