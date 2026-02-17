@@ -19,8 +19,13 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Initialize Flask app
-app = Flask(__name__, template_folder='frontend', static_folder='frontend')
+# Determine the project root directory
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+template_folder = os.path.join(project_root, 'frontend')
+static_folder = os.path.join(project_root, 'frontend')
+
+# Initialize Flask app with absolute paths
+app = Flask(__name__, template_folder=template_folder, static_folder=static_folder)
 app.config.from_object(current_config)
 
 # Initialize components
@@ -124,12 +129,3 @@ def internal_error(error):
     logger.error(f"Internal server error: {str(error)}")
     return jsonify({'error': 'Internal server error'}), 500
 
-
-if __name__ == '__main__':
-    logger.info(f"Starting application in {current_config.ENV} mode")
-    logger.info(f"Monitoring cryptos: {', '.join(current_config.CRYPTOS)}")
-    app.run(
-        host=current_config.HOST,
-        port=current_config.PORT,
-        debug=current_config.DEBUG
-    )

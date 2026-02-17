@@ -68,7 +68,7 @@ jobs:
     
     - name: Verify application starts
       run: |
-        timeout 5 python backend/app.py || true
+        timeout 5 python run.py || true
       continue-on-error: true
     
     - name: Build completed
