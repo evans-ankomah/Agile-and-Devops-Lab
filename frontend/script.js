@@ -1,7 +1,7 @@
 // Dashboard JavaScript
 
-// Auto-refresh every 30 seconds
-const AUTO_REFRESH_INTERVAL = 30000;
+// Auto-refresh every 60 seconds (CoinGecko free tier allows ~10-50 requests/min)
+const AUTO_REFRESH_INTERVAL = 60000;
 let autoRefreshTimer = null;
 
 // Initialize dashboard on page load

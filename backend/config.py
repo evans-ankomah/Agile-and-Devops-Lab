@@ -13,7 +13,7 @@ class Config:
     # CoinGecko API settings
     COINGECKO_API_URL = "https://api.coingecko.com/api/v3"
     CRYPTOS = ['bitcoin', 'ethereum', 'cardano', 'polkadot', 'solana']
-    INGESTION_INTERVAL = int(os.getenv('INGESTION_INTERVAL', 10))  # seconds
+    INGESTION_INTERVAL = int(os.getenv('INGESTION_INTERVAL', 61))  # seconds (respect CoinGecko rate limits)
     
     # Data storage
     DATABASE_FILE = 'market_data.db'

@@ -42,6 +42,13 @@ class CoinGeckoIngester:
             
             endpoint = f"{self.api_url}/simple/price"
             response = requests.get(endpoint, params=params, timeout=10)
+            
+            # Handle rate limiting gracefully
+            if response.status_code == 429:
+                logger.warning("CoinGecko API rate limit reached (429). Backing off...")
+                self.error_count += 1
+                return None
+            
             response.raise_for_status()
             
             data = response.json()

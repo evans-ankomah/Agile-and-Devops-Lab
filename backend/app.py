@@ -2,7 +2,7 @@
 import logging
 import os
 from flask import Flask, render_template, jsonify
-from datetime import datetime
+from datetime import datetime, timedelta
 from backend.config import current_config
 from backend.data_ingestion import CoinGeckoIngester
 from backend.transformations import DataTransformer
@@ -37,8 +37,12 @@ cache = {
     'latest_data': None,
     'last_update': None,
     'update_count': 0,
-    'error_count': 0
+    'error_count': 0,
+    'cache_expiry': None  # Timestamp when cache expires
 }
+
+# Cache TTL in seconds (60 seconds minimum to respect API rate limits)
+CACHE_TTL = 60
 
 
 @app.route('/')
@@ -64,6 +68,15 @@ def get_data():
 def refresh_data():
     """API endpoint to manually refresh data."""
     try:
+        # Check if cache is still valid
+        if cache['cache_expiry'] and datetime.utcnow() < cache['cache_expiry']:
+            logger.info("Returning cached data (cache not yet expired)")
+            return jsonify({
+                'status': 'success',
+                'message': 'Returning cached data (API rate limit protection)',
+                'data': cache['latest_data']
+            }), 200
+        
         # Fetch raw data
         raw_data = ingester.fetch_market_data()
         
@@ -71,9 +84,10 @@ def refresh_data():
             # Transform data
             transformed_data = transformer.transform_market_data(raw_data)
             
-            # Update cache
+            # Update cache with expiry time
             cache['latest_data'] = transformed_data
             cache['last_update'] = datetime.utcnow().isoformat()
+            cache['cache_expiry'] = datetime.utcnow() + timedelta(seconds=CACHE_TTL)
             cache['update_count'] += 1
             
             logger.info(f"Data refreshed successfully. Valid records: {transformed_data['summary']['valid_count']}")
