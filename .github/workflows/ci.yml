@@ -38,7 +38,7 @@ jobs:
     
     - name: Run tests with coverage
       run: |
-        pytest tests/ -v --cov=backend --cov-report=html --cov-report=term
+        pytest tests/ -v --cov=backend --cov-report=html --cov-report=term --cov-report=xml
     
     - name: Upload coverage reports
       uses: codecov/codecov-action@v3
